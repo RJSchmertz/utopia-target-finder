@@ -66,6 +66,7 @@
     "sinon": "^1.17.3",
     "sinon-as-promised": "^4.0.0",
     "style-loader": "^0.13.0",
+    "superagent": "^3.5.0",
     "superagent-no-cache": "^0.1.1",
     "url-loader": "^0.5.7",
     "webpack": "2.2.1",

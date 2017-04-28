@@ -7,6 +7,10 @@ namespace UtopiaTargetFinder.Models
 {
     public class Kingdom
     {
+        public Kingdom()
+        {
+            
+        }
         public Kingdom(dynamic obj)
         {
             Name = obj.name;
@@ -30,6 +34,7 @@ namespace UtopiaTargetFinder.Models
             }
         }
 
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public int Land { get; set; }
         public Stance Stance { get; set; }

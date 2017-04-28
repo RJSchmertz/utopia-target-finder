@@ -7,6 +7,10 @@ namespace UtopiaTargetFinder.Models
 {
     public class Province
     {
+        public Province()
+        {
+            
+        }
         public Province(dynamic obj)
         {
             Name = obj.name;
@@ -26,6 +30,7 @@ namespace UtopiaTargetFinder.Models
             }
         }
 
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public int Land { get; set; }
         public Honor Honor { get; set; }

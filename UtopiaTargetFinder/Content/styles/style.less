@@ -1,1 +1,46 @@
 @import "~bootstrap/less/bootstrap";
+
+body {
+  background-color: black;
+}
+
+.application-header {
+  border-bottom: 3px solid gray;
+  margin-bottom: 0px;
+}
+
+.navbar-default .navbar-nav > .active > a {
+  background-color: #343434;
+  color: silver;
+  font-weight: bold;
+}
+
+.side-panel {
+  position: fixed;
+  background-color: #222;
+  top: 54px;
+  bottom: 0;
+}
+
+.left-panel {
+  .side-panel;
+  border-right: 3px solid gray;
+}
+
+.side-panel-header {
+  background-color: light-gray;
+  color: white;
+  font-weight: bold;
+  border-bottom: 3px solid gray;
+  padding: 10px 0px 15px 0px;
+}
+
+th, td {
+  width: 12%;
+}
+
+table, th, td {
+    border: 1px solid gray;
+    padding: 2px;
+    text-align: center;
+}

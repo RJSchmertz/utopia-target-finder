@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute } from 'react-router';
 import Application from './containers/application';
-import HelloWorld from './containers/helloWorld';
+import ProvinceFinder from './containers/ProvinceFinder';
 import './styles.js';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
@@ -34,7 +34,8 @@ render(
     <div>
       <Router history={history}>
         <Route path="/" component={Application} >
-          <IndexRoute name="index" component={HelloWorld} />
+          <IndexRoute name="index" component={ProvinceFinder} />
+          <Route name="provfinder" path="/provfinder" component={ProvinceFinder} />
         </Route>
       </Router>
     </div>
