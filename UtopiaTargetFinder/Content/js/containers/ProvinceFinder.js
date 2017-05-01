@@ -6,7 +6,10 @@ import {
   Navbar, Nav, NavItem, Row, Col
 } from 'react-bootstrap';
 import request from 'superagent';
-import _ from 'lodash';
+// import _ from 'lodash';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import { Race } from '../constants';
 
 export class ProvinceFinder extends React.Component {
   static propTypes = {
@@ -24,27 +27,58 @@ export class ProvinceFinder extends React.Component {
       .set('Accept', 'application/json')
       .end((err, resp) => {
         if (err) console.log(err);
-        const provinces = resp.body.provinces;
-        const kingdoms = resp.body.kingdoms;
-        console.log(provinces);
-        console.log(kingdoms);
-        this.setState({ provinces, kingdoms });
+        else {
+          const provinces = resp.body.provinces;
+          const kingdoms = resp.body.kingdoms;
+          this.setState({ provinces, kingdoms });
+        }
       });
   }
 
   provinceToTable = () => {
     const { provinces } = this.state;
     if (!provinces.length) return null;
-    const rows = [];
-    const firstProv = provinces[0];
-    const header = _.map(firstProv, (value, name) => (<th>{name.toString()}</th>));
-    rows.push(header);
-    provinces.forEach(province => {
-      const tds = _.map(province, (value, name) => (<td>{value.toString()}</td>));
 
-      rows.push(<tr>{tds}</tr>);
-    });
-    return rows;
+    const columns = [
+      {
+        header: 'Honor',
+        accessor: 'honor'
+      },
+      {
+        header: 'location',
+        accessor: 'location'
+      },
+      {
+        header: 'Name',
+        accessor: 'name'
+      },
+      {
+        header: 'Race',
+        accessor: 'race',
+        render: data => Race[data.row.race]
+      },
+      {
+        header: 'Land',
+        accessor: 'land'
+      },
+      {
+        header: 'Networth',
+        accessor: 'networth'
+      }
+    ];
+
+    return (<ReactTable data={provinces} columns={columns} />);
+
+    // const rows = [];
+    // const firstProv = provinces[0];
+    // const header = _.map(firstProv, (value, name) => (<th>{name.toString()}</th>));
+    // rows.push(header);
+    // provinces.forEach(province => {
+    //   const tds = _.map(province, (value, name) => (<td>{value.toString()}</td>));
+
+    //   rows.push(<tr>{tds}</tr>);
+    // });
+    // return rows;
   }
 
   render() {
@@ -73,7 +107,7 @@ export class ProvinceFinder extends React.Component {
             <div>
             </div>
           </Col>
-          <Col xs={6} className="col-xs-push-3" style={{ padding: '15px' }}>
+          <Col xs={9} className="col-xs-push-3" style={{ padding: '15px' }}>
             <table>
               {this.provinceToTable()}
             </table>
