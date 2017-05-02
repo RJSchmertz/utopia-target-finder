@@ -99,10 +99,11 @@ namespace UtopiaTargetFinder
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
                 var url = Environment.GetEnvironmentVariable("DATABASE_URL");
-                Console.WriteLine($"********** {url}");
+                var builtUrl = $"Host={url};Database=UtopiaTargetFinder;Integrated Security=True;";
+                Console.WriteLine($"********** {builtUrl}");
                 return DocumentStore.For(_ =>
                 {
-                    _.Connection(() => !string.IsNullOrEmpty(url) ? url : c.GetInstance<MartenSettings>().ConnectionString);
+                    _.Connection(() => !string.IsNullOrEmpty(url) ? builtUrl : c.GetInstance<MartenSettings>().ConnectionString);
                     _.AutoCreateSchemaObjects = AutoCreate.All;
                 });
             });
