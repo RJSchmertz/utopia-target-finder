@@ -99,7 +99,7 @@ namespace UtopiaTargetFinder
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
                 var url = Environment.GetEnvironmentVariable("DATABASE_URL");
-                var builtUrl = $"Host={url};Database=UtopiaTargetFinder;Integrated Security=True;";
+                var builtUrl = $"Host={url}";
                 Console.WriteLine($"********** {builtUrl}");
                 return DocumentStore.For(_ =>
                 {
