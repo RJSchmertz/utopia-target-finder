@@ -28,7 +28,6 @@ export default class ProvinceFinder extends React.Component {
   }
 
   setProvLow = event => {
-    console.log(event.target.value);
     this.setState({ provLow: event.target.value });
   }
 

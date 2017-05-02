@@ -11,9 +11,8 @@ export const getUtopiaData = () =>
       .get('/Home/GetData')
       .set('Accept', 'application/json')
       .end((err, resp) => {
-        if (err) console.log(err);
+        if (err) console.log(err); // eslint-disable-line no-console
         else {
-          console.log(resp.body);
           const provinces = resp.body.provinces;
           const kingdoms = resp.body.kingdoms;
           dispatch(setUtopiaData(provinces, kingdoms));

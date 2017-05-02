@@ -85,7 +85,7 @@ namespace UtopiaTargetFinder
                 x.Policies.OnMissingFamily<SettingsPolicy>();
                 x.ForSingletonOf<IConfigurationRoot>().Use(Configuration);
                 x.IncludeRegistry<UtopiaTargetFinderStructureMapRegistry>();
-                //x.IncludeRegistry<MartenDatabaseRegistry>();
+                x.IncludeRegistry<MartenDatabaseRegistry>();
             });
 
             return container;
@@ -98,9 +98,10 @@ namespace UtopiaTargetFinder
         {
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
+                var url = Environment.GetEnvironmentVariable("DATABASE_URL");
                 return DocumentStore.For(_ =>
                 {
-                    _.Connection(() => c.GetInstance<MartenSettings>().ConnectionString);
+                    _.Connection(() => !string.IsNullOrEmpty(url) ? url : c.GetInstance<MartenSettings>().ConnectionString);
                     _.AutoCreateSchemaObjects = AutoCreate.All;
                 });
             });

@@ -1,10 +1,10 @@
 import _ from 'lodash';
-export const myNetworthRange = (arr, myNw, low, high) =>
-  _.filter(arr,
-    o => o.networth > myNw * (low / 100)
-    && o.networth < myNw * (high / 100));
+export const myNetworthRange = (provinces, myNw, low, high) =>
+  _.filter(provinces,
+    prov => prov.networth > myNw * (low / 100)
+    && prov.networth < myNw * (high / 100));
 
-export const myKdNetworthRange = (arr, myKdNw, low, high) =>
-  _.filter(arr,
-    o => o.kingdomNetworth > myKdNw * (low / 100)
-    && o.kingdomNetworth < myKdNw * (high / 100));
+export const myKdNetworthRange = (provinces, myKdNw, low, high) =>
+  _.filter(provinces,
+    prov => prov.kingdomNetworth > myKdNw * (low / 100)
+    && prov.kingdomNetworth < myKdNw * (high / 100));
