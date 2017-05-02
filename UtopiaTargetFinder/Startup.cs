@@ -99,12 +99,15 @@ namespace UtopiaTargetFinder
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
                 var url = Environment.GetEnvironmentVariable("DATABASE_URL");
+                url = url.Replace("postgres://", "");
+                var thing =
+                    "Host=ec2-23-23-222-147.compute-1.amazonaws.com;Port=5432;Database=d5a86pjstt12su;User Id=twtybpkzkdiklo;Password=788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b";
 
                 var builtUrl = $"Host={url}";
                 Console.WriteLine($"********** {builtUrl}");
                 return DocumentStore.For(_ =>
                 {
-                    _.Connection(() => builtUrl);
+                    _.Connection(() => thing);
                     _.AutoCreateSchemaObjects = AutoCreate.All;
                 });
             });
