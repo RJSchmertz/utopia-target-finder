@@ -98,14 +98,13 @@ namespace UtopiaTargetFinder
         {
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
-                var url = "thing"; //Environment.GetEnvironmentVariable("DATABASE_URL");
-                //  Host=postgres://twtybpkzkdiklo:788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b@ec2-23-23-222-147.compute-1.amazonaws.com:5432/d5a86pjstt12su
+                var url = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-                var builtUrl = "Host=postgres://twtybpkzkdiklo:788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b@ec2-23-23-222-147.compute-1.amazonaws.com:5432/d5a86pjstt12su";
+                var builtUrl = $"Host={url}";
                 Console.WriteLine($"********** {builtUrl}");
                 return DocumentStore.For(_ =>
                 {
-                    _.Connection(() => "Host=postgres://twtybpkzkdiklo:788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b@ec2-23-23-222-147.compute-1.amazonaws.com:5432/d5a86pjstt12su");
+                    _.Connection(() => builtUrl);
                     _.AutoCreateSchemaObjects = AutoCreate.All;
                 });
             });
