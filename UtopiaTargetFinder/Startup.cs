@@ -40,7 +40,7 @@ namespace UtopiaTargetFinder
             services.AddMvc();
 
             var container = ConfigureContainer(services);
-            return container.GetInstance<IServiceProvider>(); 
+            return container.GetInstance<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,7 +89,7 @@ namespace UtopiaTargetFinder
             });
 
             return container;
-        } 
+        }
     }
 
     public class MartenDatabaseRegistry : Registry
@@ -98,24 +98,31 @@ namespace UtopiaTargetFinder
         {
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
-                //postgres://<username>:<password>@<host>:port/<dbname>
-                // "postgres://twtybpkzkdiklo:788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b@ec2-23-23-222-147.compute-1.amazonaws.com:5432/d5a86pjstt12su";
                 var url = Environment.GetEnvironmentVariable("DATABASE_URL");
-                url = url.Replace("postgres://", "");
-                var split = url.Split(':');
-                var username = split[0];
-                var portAndDb = split[2];
-                var port = portAndDb.Split('/')[0];
-                var dbname = portAndDb.Split('/')[1];
-                split = split[1].Split('@');
-                var password = split[0];
-                split = split[1].Split('/');
-                var host = split[0];
+                string builtUrl;
+                try
+                {
+                    url = url.Replace("postgres://", "");
+                    var split = url.Split(':');
+                    var username = split[0];
+                    var portAndDb = split[2];
+                    var port = portAndDb.Split('/')[0];
+                    var dbname = portAndDb.Split('/')[1];
+                    split = split[1].Split('@');
+                    var password = split[0];
+                    split = split[1].Split('/');
+                    var host = split[0];
 
-                var thing =
-                    "Host=ec2-23-23-222-147.compute-1.amazonaws.com;Port=5432;Database=d5a86pjstt12su;User Id=twtybpkzkdiklo;Password=788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b";
+                    var thing =
+                        "Host=ec2-23-23-222-147.compute-1.amazonaws.com;Port=5432;Database=d5a86pjstt12su;User Id=twtybpkzkdiklo;Password=788e8167f7bb7c108df99bf944ab2e8f8edd658eaa0cffb880b9a027cfe9310b";
 
-                var builtUrl = $"Host={host};Port={port};Database={dbname};User Id={username};Password={password}";
+                    builtUrl = $"Host={host};Port={port};Database={dbname};User Id={username};Password={password}";
+
+                }
+                catch (Exception)
+                {
+                    builtUrl = c.GetInstance<MartenSettings>().ConnectionString;
+                }
                 return DocumentStore.For(_ =>
                 {
                     _.Connection(() => builtUrl);
@@ -219,4 +226,4 @@ namespace UtopiaTargetFinder
             return instance;
         }
     }
- }
+}
