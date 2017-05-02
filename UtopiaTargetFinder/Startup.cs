@@ -99,6 +99,7 @@ namespace UtopiaTargetFinder
             ForSingletonOf<IDocumentStore>().Use("Marten Data Store", c =>
             {
                 var url = Environment.GetEnvironmentVariable("DATABASE_URL");
+                Console.WriteLine($"********** {url}");
                 return DocumentStore.For(_ =>
                 {
                     _.Connection(() => !string.IsNullOrEmpty(url) ? url : c.GetInstance<MartenSettings>().ConnectionString);
