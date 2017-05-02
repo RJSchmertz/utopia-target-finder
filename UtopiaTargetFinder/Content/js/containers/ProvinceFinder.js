@@ -5,52 +5,34 @@ import { connect } from 'react-redux';
 import {
   Navbar, Nav, NavItem, Row, Col
 } from 'react-bootstrap';
-import request from 'superagent';
 // import _ from 'lodash';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Race } from '../constants';
+import { Race, Honor } from '../constants';
+import * as actions from '../store/actions';
+import LeftPanel from '../components/LeftPanel';
+import * as filters from '../utils/filters';
 
 export class ProvinceFinder extends React.Component {
   static propTypes = {
-    actions: PropTypes.object.isRequired
-  }
-
-  state = {
-    provinces: [],
-    kingdoms: []
+    actions: PropTypes.object.isRequired,
+    provinces: PropTypes.array,
+    kingdoms: PropTypes.array
   }
 
   componentDidMount() {
-    request
-      .get('/Home/GetData')
-      .set('Accept', 'application/json')
-      .end((err, resp) => {
-        if (err) console.log(err);
-        else {
-          const provinces = resp.body.provinces;
-          const kingdoms = resp.body.kingdoms;
-          this.setState({ provinces, kingdoms });
-        }
-      });
+    this.props.actions.getUtopiaData();
   }
 
   provinceToTable = () => {
-    const { provinces } = this.state;
+    const { provinces } = this.props;
     if (!provinces.length) return null;
 
     const columns = [
       {
-        header: 'Honor',
-        accessor: 'honor'
-      },
-      {
-        header: 'location',
-        accessor: 'location'
-      },
-      {
         header: 'Name',
-        accessor: 'name'
+        accessor: 'name',
+        minWidth: 200
       },
       {
         header: 'Race',
@@ -58,27 +40,38 @@ export class ProvinceFinder extends React.Component {
         render: data => Race[data.row.race]
       },
       {
+        header: 'NW/a',
+        render: data => (data.row.networth / data.row.land).toFixed(2)
+      },
+      {
         header: 'Land',
-        accessor: 'land'
+        accessor: 'land',
+        render: data => data.row.land.toLocaleString()
       },
       {
         header: 'Networth',
-        accessor: 'networth'
+        accessor: 'networth',
+        render: data => data.row.networth.toLocaleString()
+      },
+      {
+        header: 'Honor',
+        accessor: 'honor',
+        render: data => Honor[data.row.honor]
+      },
+      {
+        header: 'Location',
+        accessor: 'location'
+      },
+      {
+        header: 'Kingdom Nw',
+        accessor: 'kingdomNetworth',
+        render: data => data.row.kingdomNetworth.toLocaleString()
       }
     ];
 
-    return (<ReactTable data={provinces} columns={columns} />);
+    const data = filters.myNetworthRange(provinces, 500000, 90, 110);
 
-    // const rows = [];
-    // const firstProv = provinces[0];
-    // const header = _.map(firstProv, (value, name) => (<th>{name.toString()}</th>));
-    // rows.push(header);
-    // provinces.forEach(province => {
-    //   const tds = _.map(province, (value, name) => (<td>{value.toString()}</td>));
-
-    //   rows.push(<tr>{tds}</tr>);
-    // });
-    // return rows;
+    return (<ReactTable data={data} columns={columns} />);
   }
 
   render() {
@@ -101,13 +94,9 @@ export class ProvinceFinder extends React.Component {
       <div className="container-fluid">
         <Row>
           <Col xs={3} className="left-panel">
-            <div className="side-panel-header">
-              Province
-            </div>
-            <div>
-            </div>
+            <LeftPanel actions={actions} />
           </Col>
-          <Col xs={9} className="col-xs-push-3" style={{ padding: '15px' }}>
+          <Col xs={9} className="col-xs-push-3 main-panel">
             <table>
               {this.provinceToTable()}
             </table>
@@ -121,13 +110,14 @@ export class ProvinceFinder extends React.Component {
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators({}, dispatch)
+    actions: bindActionCreators({ ...actions }, dispatch)
   }
 );
 
 const mapStateToProps = state => (
   {
-    dispatch: state.dispatch
+    provinces: state.reducer.provinces,
+    kingdoms: state.reducer.kingdoms
   }
 );
 

@@ -12,11 +12,11 @@ namespace UtopiaTargetFinder.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IDocumentSession _session;
+        // private readonly IDocumentSession _session;
 
-        public HomeController(IDocumentSession session)
+        public HomeController(/*IDocumentSession session*/)
         {
-            _session = session;
+            // _session = session;
         }
         public async Task<IActionResult> Index()
         {
@@ -54,7 +54,7 @@ namespace UtopiaTargetFinder.Controllers
             //        Race = Race.Avian,
             //        Land = 12555,
             //        Protected = false,
-            //        Networth = 321456 
+            //        Networth = 321456
             //    });
 
             //    allKingdoms.Add(new Kingdom
@@ -68,13 +68,27 @@ namespace UtopiaTargetFinder.Controllers
             //        Provinces = allProvinces,
             //        Land = 432432432,
             //        Networth = 32432,
-            //        Count = 1 
+            //        Count = 1
             //    });
             //}
+
+            //var allProvinces = _session.Query<Province>().ToList();
+            //var allKingdoms = _session.Query<Kingdom>().ToList();
+
+            //allProvinces.ForEach(prov =>
+            //{
+            //    var kdnw = allKingdoms.Single(x => x.Location == prov.Location).Networth;
+            //    prov.KingdomNetworth = kdnw;
+            //});
+
 
             //_session.Store(allProvinces.ToArray());
             //_session.Store(allKingdoms.ToArray());
             //_session.SaveChanges();
+
+            //var stuff = Environment.GetEnvironmentVariables();
+            //var url = Environment.GetEnvironmentVariable("DATABASE_URL");
+            //var url2 = Environment.GetEnvironmentVariable("ASPNETCORE_DATABASE_URL");
 
 
             return View();
@@ -82,10 +96,11 @@ namespace UtopiaTargetFinder.Controllers
 
         public JsonResult getData()
         {
-            var provs = _session.Query<Province>().ToList();
-            var kds = _session.Query<Kingdom>().ToList();
+            //var provs = _session.Query<Province>().ToList();
+            //var kds = _session.Query<Kingdom>().ToList();
+            var EnvironmentVariables = Environment.GetEnvironmentVariables();
 
-            return Json(new {Provinces = provs, Kingdoms = kds}); 
+            return Json(new {/* Provinces = provs, Kingdoms = kds, */EnvironmentVariables = EnvironmentVariables }); 
         }
 
         public IActionResult Error()

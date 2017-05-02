@@ -85,7 +85,7 @@ namespace UtopiaTargetFinder
                 x.Policies.OnMissingFamily<SettingsPolicy>();
                 x.ForSingletonOf<IConfigurationRoot>().Use(Configuration);
                 x.IncludeRegistry<UtopiaTargetFinderStructureMapRegistry>();
-                x.IncludeRegistry<MartenDatabaseRegistry>();
+                //x.IncludeRegistry<MartenDatabaseRegistry>();
             });
 
             return container;

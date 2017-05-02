@@ -38,6 +38,7 @@ namespace UtopiaTargetFinder.Models
         public string Location { get; set; }
         public bool Protected { get; set; }
         public Race Race { get; set; }
+        public int KingdomNetworth { get; set; }
 
         public static IEnumerable<Province> GetProvinces(dynamic obj)
         {
