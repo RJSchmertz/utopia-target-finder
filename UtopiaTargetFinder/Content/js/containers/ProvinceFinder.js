@@ -52,11 +52,8 @@ export class ProvinceFinder extends React.Component {
       {
         header: 'Name',
         accessor: 'name',
+        render: data => `${data.row.name} (${data.row.location})`,
         minWidth: 200
-      },
-      {
-        header: 'Location',
-        accessor: 'location'
       },
       {
         header: 'Race',
@@ -118,7 +115,7 @@ export class ProvinceFinder extends React.Component {
     return (
       <div>
         <Header actions={this.props.actions} headerOpen={this.props.headerOpen} />
-        <div className="container-fluid main-panel" onClick={this.onBodyClick}>
+        <div className="container-fluid main-panel pull-left" onClick={this.onBodyClick}>
           <Row>
             <Col>
                 {this.provinceToTable()}
