@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import {
+  Navbar,
   Row,
   Col,
   FormGroup,
@@ -10,9 +11,10 @@ import {
 } from 'react-bootstrap';
 
 
-export default class ProvinceFinder extends React.Component {
+export default class Header extends React.Component {
   static propTypes = {
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    headerOpen: PropTypes.bool
   }
   state = {
     myNwChecked: true,
@@ -74,34 +76,45 @@ export default class ProvinceFinder extends React.Component {
         provHigh, kdLow, kdHigh);
   };
 
+  setCollapseHeader = () => {
+    const { headerOpen, actions } = this.props;
+    actions.setHeaderOpen(!headerOpen);
+  }
+
   render() {
     return (
-      <div>
-        <div className="side-panel-header">
-          Province
-        </div>
+      <Navbar inverse collapseOnSelect className="application-header">
+          <span
+            onClick={this.setCollapseHeader} >
+            <span className="glyphicon glyphicon-menu-down" /> Filters
+          </span>
+          <Collapse in={this.props.headerOpen}>
         <div>
-          <Checkbox
-            disabled
-            checked={this.state.myNwChecked}
-            onChange={this.setMyNwChecked} >
-              Use My Networth Range
-          </Checkbox>
-          <Collapse in={this.state.myNwChecked}>
-          <div>
+            <Row>
             <FormGroup>
-              <ControlLabel>My Networth</ControlLabel>
+              <Col xs={1}>
+              <ControlLabel>
+                <Checkbox
+                  checked={this.state.myNwChecked}
+                  onChange={this.setMyNwChecked} >
+                    My NW
+                </Checkbox>
+              </ControlLabel>
+              </Col>
+              <Col xs={3}>
               <FormControl
+                disabled={!this.state.myNwChecked}
                 bsSize="sm"
                 type="number"
                 value={this.state.myNw}
                 onChange={this.setMyNw} />
-            <Row>
-              <Col xs={2}>
-                <ControlLabel>Low: </ControlLabel>
               </Col>
-              <Col xs={4}>
+              <Col xs={1}>
+                <ControlLabel>Low:</ControlLabel>
+              </Col>
+              <Col xs={3}>
                 <FormControl
+                  disabled={!this.state.myNwChecked}
                   bsSize="sm"
                   type="number"
                   min={0}
@@ -110,11 +123,12 @@ export default class ProvinceFinder extends React.Component {
                   value={this.state.provLow}
                   onChange={this.setProvLow} />
               </Col>
-              <Col xs={2}>
+              <Col xs={1}>
                 <ControlLabel>High: </ControlLabel>
               </Col>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FormControl
+                  disabled={!this.state.myNwChecked}
                   bsSize="sm"
                   type="number"
                   min={0}
@@ -123,33 +137,34 @@ export default class ProvinceFinder extends React.Component {
                   value={this.state.provHigh}
                   onChange={this.setProvHigh} />
               </Col>
-            </Row>
             </FormGroup>
-            </div>
-          </Collapse>
-          <hr />
+            </Row>
 
-          <Checkbox
-            checked={this.state.myKdNwChecked}
-            onChange={this.setMyKdNwChecked} >
-              Use Kingdom Networth Range
-          </Checkbox>
-          <Collapse in={this.state.myKdNwChecked}>
-          <div>
+            <Row>
             <FormGroup>
-              <ControlLabel>My Kingdom's Networth</ControlLabel>
+              <Col xs={1}>
+              <ControlLabel>
+                <Checkbox
+                  checked={this.state.myKdNwChecked}
+                  onChange={this.setMyKdNwChecked} >
+                    KD NW
+                </Checkbox>
+              </ControlLabel>
+              </Col>
+              <Col xs={3}>
               <FormControl
+                disabled={!this.state.myKdNwChecked}
                 bsSize="sm"
                 type="number"
                 value={this.state.myKdNw}
                 onChange={this.setMyKdNw} />
-            </FormGroup>
-            <Row>
-              <Col xs={2}>
+              </Col>
+              <Col xs={1}>
                 <ControlLabel>Low: </ControlLabel>
               </Col>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FormControl
+                  disabled={!this.state.myKdNwChecked}
                   bsSize="sm"
                   type="number"
                   min={0}
@@ -158,11 +173,12 @@ export default class ProvinceFinder extends React.Component {
                   value={this.state.kdLow}
                   onChange={this.setKdLow} />
               </Col>
-              <Col xs={2}>
+              <Col xs={1}>
                 <ControlLabel>High: </ControlLabel>
               </Col>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FormControl
+                  disabled={!this.state.myKdNwChecked}
                   bsSize="sm"
                   min={0}
                   max={1}
@@ -171,13 +187,11 @@ export default class ProvinceFinder extends React.Component {
                   value={this.state.kdHigh}
                   onChange={this.setKdHigh} />
               </Col>
+            </FormGroup>
             </Row>
-            </div>
-          </Collapse>
-          <hr />
         </div>
-      </div>
+          </Collapse>
+      </Navbar>
     );
   }
-
 }

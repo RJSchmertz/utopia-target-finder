@@ -2,15 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {
-  Navbar, Nav, NavItem, Row, Col
-} from 'react-bootstrap';
-// import _ from 'lodash';
+import { Row, Col } from 'react-bootstrap';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Race, Honor } from '../constants';
 import * as utoActions from '../store/utoActions';
-import LeftPanel from '../components/LeftPanel';
+import Header from '../components/Header';
 import * as filters from '../utils/filters';
 
 export class ProvinceFinder extends React.Component {
@@ -18,11 +15,33 @@ export class ProvinceFinder extends React.Component {
     actions: PropTypes.object.isRequired,
     provinces: PropTypes.array,
     kingdoms: PropTypes.array,
+    headerOpen: PropTypes.bool,
     filterInfo: PropTypes.object
   }
 
   componentDidMount() {
     this.props.actions.getUtopiaData();
+    window.onscroll = this.onBodyClick;
+  }
+
+  state = {
+    myNwChecked: true,
+    myKdNwChecked: false,
+    collapseHeader: false,
+    myNw: 200000,
+    myKdNw: 5000000,
+    provLow: 0.85,
+    provHigh: 1.10,
+    kdLow: 0.50,
+    kdHigh: 0.90
+  }
+
+  setMyNwChecked = event => {
+    this.setState({ myNwChecked: event.target.checked }, this.sendFilterInfo);
+  }
+
+  onBodyClick = () => {
+    this.props.actions.setHeaderOpen(false);
   }
 
   provinceToTable = () => {
@@ -98,32 +117,14 @@ export class ProvinceFinder extends React.Component {
   render() {
     return (
       <div>
-      <Navbar inverse collapseOnSelect className="application-header">
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="#">Utopia-Target-Finder</a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-        <Nav>
-          <NavItem eventKey={1} active href="#">Province Finder</NavItem>
-          <NavItem eventKey={2} href="#">Kingdom Finder</NavItem>
-        </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-      <div className="container-fluid">
-        <Row>
-          <Col xs={3} className="left-panel">
-            <LeftPanel actions={this.props.actions} />
-          </Col>
-          <Col xs={9} className="col-xs-push-3 main-panel">
-            <table>
-              {this.provinceToTable()}
-            </table>
-          </Col>
-        </Row>
-      </div>
+        <Header actions={this.props.actions} headerOpen={this.props.headerOpen} />
+        <div className="container-fluid main-panel" onClick={this.onBodyClick}>
+          <Row>
+            <Col>
+                {this.provinceToTable()}
+            </Col>
+          </Row>
+        </div>
       </div>
     );
   }
@@ -139,7 +140,8 @@ const mapStateToProps = state => (
   {
     provinces: state.utoReducer.provinces,
     kingdoms: state.utoReducer.kingdoms,
-    filterInfo: state.utoReducer.filterInfo
+    filterInfo: state.utoReducer.filterInfo,
+    headerOpen: state.utoReducer.headerOpen
   }
 );
 

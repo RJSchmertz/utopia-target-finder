@@ -8,16 +8,33 @@ body {
 .application-header {
   border-bottom: 3px solid gray;
   margin-bottom: 0px;
+  min-height: 35px;
   position: fixed;
   z-index: 2;
   top: 0px;
   left: 0px;
   width: 100%;
+  .container {
+    margin: 5px;
+  }
+}
+
+.form-control[disabled] {
+  opacity: 0.3;
 }
 
 .navbar-default .navbar-nav > .active > a {
   background-color: #343434;
   font-weight: bold;
+}
+
+.form-group .col-xs-1 {
+  padding-left: 0px;
+  width: 8%;
+}
+
+.form-group .col-xs-3 {
+  margin-right: 1px;
 }
 
 .side-panel {
@@ -28,8 +45,8 @@ body {
 }
 
 .main-panel {
-  top: 54px;
-  padding: 15px;
+  top: 40px;
+  padding: 40px 15px 15px 15px;
 }
 
 .left-panel {
@@ -45,7 +62,7 @@ body {
   padding: 10px 0px 15px 0px;
 }
 
-th, td {
+/*th, td {
   width: 12%;
 }
 
@@ -54,3 +71,4 @@ table, th, td {
     padding: 2px;
     text-align: center;
 }
+*/

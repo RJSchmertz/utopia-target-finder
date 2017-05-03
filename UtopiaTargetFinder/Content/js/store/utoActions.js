@@ -11,6 +11,10 @@ export const setFilterInfo = (myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
     provHigh, kdLow, kdHigh
   });
 
+export const setHeaderOpen = headerOpen => ({
+  type: types.SET_HEADER_OPEN, headerOpen
+});
+
 export const getUtopiaData = () =>
   dispatch => {
     request

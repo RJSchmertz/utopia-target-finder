@@ -3,6 +3,7 @@ import types from './utoActionTypes';
 const initialState = {
   provinces: [],
   kingdoms: [],
+  headerOpen: false,
   filterInfo: {
     myNwChecked: true,
     myKdNwChecked: false,
@@ -23,6 +24,8 @@ export const utoReducer = (state = initialState, action) => {
       return { ...newState, provinces: action.provinces, kingdoms: action.kingdoms };
     case types.SET_FILTER_INFO:
       return { ...newState, filterInfo: { ...action } };
+    case types.SET_HEADER_OPEN:
+      return { ...newState, headerOpen: action.headerOpen };
     default:
       return newState;
   }
