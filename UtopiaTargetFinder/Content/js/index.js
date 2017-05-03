@@ -9,7 +9,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import { createHashHistory } from 'history';
 import thunk from 'redux-thunk';
-import { reducer } from './store/reducer';
+import { utoReducer } from './store/utoReducer';
 
 const hashHistory = createHashHistory();
 const routeMiddleware = routerMiddleware(hashHistory);
@@ -20,7 +20,7 @@ const store =
   createStoreWithMiddleware(
     combineReducers(
       {
-        reducer,
+        utoReducer,
         routing: routerReducer
       }
     )

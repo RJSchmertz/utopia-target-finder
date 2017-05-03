@@ -1,9 +1,15 @@
 import request from 'superagent';
-import types from './actionTypes';
+import types from './utoActionTypes';
 
 export const setUtopiaData = (provinces, kingdoms) => ({
   type: types.SET_UTOPIA_DATA, provinces, kingdoms
 });
+
+export const setFilterInfo = (myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
+  provHigh, kdLow, kdHigh) => ({
+    type: types.SET_FILTER_INFO, myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
+    provHigh, kdLow, kdHigh
+  });
 
 export const getUtopiaData = () =>
   dispatch => {

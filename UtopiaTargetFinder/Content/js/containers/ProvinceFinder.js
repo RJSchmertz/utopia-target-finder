@@ -9,7 +9,7 @@ import {
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Race, Honor } from '../constants';
-import * as actions from '../store/actions';
+import * as utoActions from '../store/utoActions';
 import LeftPanel from '../components/LeftPanel';
 import * as filters from '../utils/filters';
 
@@ -17,7 +17,8 @@ export class ProvinceFinder extends React.Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     provinces: PropTypes.array,
-    kingdoms: PropTypes.array
+    kingdoms: PropTypes.array,
+    filterInfo: PropTypes.object
   }
 
   componentDidMount() {
@@ -35,13 +36,18 @@ export class ProvinceFinder extends React.Component {
         minWidth: 200
       },
       {
+        header: 'Location',
+        accessor: 'location'
+      },
+      {
         header: 'Race',
         accessor: 'race',
         render: data => Race[data.row.race]
       },
       {
         header: 'NW/a',
-        render: data => (data.row.networth / data.row.land).toFixed(2)
+        accessor: 'nwa',
+        render: data => data.row.nwa.toFixed(2)
       },
       {
         header: 'Land',
@@ -59,17 +65,32 @@ export class ProvinceFinder extends React.Component {
         render: data => Honor[data.row.honor]
       },
       {
-        header: 'Location',
-        accessor: 'location'
-      },
-      {
         header: 'Kingdom Nw',
         accessor: 'kingdomNetworth',
         render: data => data.row.kingdomNetworth.toLocaleString()
       }
     ];
 
-    const data = filters.myNetworthRange(provinces, 500000, 90, 110);
+    let data = provinces;
+    const { filterInfo } = this.props;
+    const {
+      myNwChecked,
+      myKdNwChecked,
+      myNw,
+      myKdNw,
+      provLow,
+      provHigh,
+      kdLow,
+      kdHigh
+    } = filterInfo;
+
+    if (myNwChecked) {
+      data = filters.myNetworthRange(data, myNw, provLow, provHigh);
+    }
+
+    if (myKdNwChecked) {
+      data = filters.myKdNetworthRange(data, myKdNw, kdLow, kdHigh);
+    }
 
     return (<ReactTable data={data} columns={columns} />);
   }
@@ -94,7 +115,7 @@ export class ProvinceFinder extends React.Component {
       <div className="container-fluid">
         <Row>
           <Col xs={3} className="left-panel">
-            <LeftPanel actions={actions} />
+            <LeftPanel actions={this.props.actions} />
           </Col>
           <Col xs={9} className="col-xs-push-3 main-panel">
             <table>
@@ -110,14 +131,15 @@ export class ProvinceFinder extends React.Component {
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ ...utoActions }, dispatch)
   }
 );
 
 const mapStateToProps = state => (
   {
-    provinces: state.reducer.provinces,
-    kingdoms: state.reducer.kingdoms
+    provinces: state.utoReducer.provinces,
+    kingdoms: state.utoReducer.kingdoms,
+    filterInfo: state.utoReducer.filterInfo
   }
 );
 

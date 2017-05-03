@@ -17,6 +17,8 @@ export default class ProvinceFinder extends React.Component {
   state = {
     myNwChecked: true,
     myKdNwChecked: false,
+    myNw: 200000,
+    myKdNw: 5000000,
     provLow: 0.85,
     provHigh: 1.10,
     kdLow: 0.50,
@@ -24,28 +26,53 @@ export default class ProvinceFinder extends React.Component {
   }
 
   setMyNwChecked = event => {
-    this.setState({ myNwChecked: event.target.checked });
+    this.setState({ myNwChecked: event.target.checked }, this.sendFilterInfo);
+  }
+
+  setMyNw = event => {
+    this.setState({ myNw: event.target.value }, this.sendFilterInfo);
+  }
+
+  setMyKdNw = event => {
+    this.setState({ myKdNw: event.target.value }, this.sendFilterInfo);
   }
 
   setProvLow = event => {
-    this.setState({ provLow: event.target.value });
+    this.setState({ provLow: event.target.value }, this.sendFilterInfo);
   }
 
   setProvHigh = event => {
-    this.setState({ provHigh: event.target.value });
+    this.setState({ provHigh: event.target.value }, this.sendFilterInfo);
   }
 
   setMyKdNwChecked = event => {
-    this.setState({ myKdNwChecked: event.target.checked });
+    this.setState({ myKdNwChecked: event.target.checked }, this.sendFilterInfo);
   }
 
   setKdLow = event => {
-    this.setState({ kdLow: event.target.value });
+    this.setState({ kdLow: event.target.value }, this.sendFilterInfo);
   }
 
   setKdHigh = event => {
-    this.setState({ kdHigh: event.target.value });
+    this.setState({ kdHigh: event.target.value }, this.sendFilterInfo);
   }
+
+  sendFilterInfo = () => {
+    const {
+      myNwChecked,
+      myKdNwChecked,
+      myNw,
+      myKdNw,
+      provLow,
+      provHigh,
+      kdLow,
+      kdHigh
+    } = this.state;
+
+    this.props.actions
+      .setFilterInfo(myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
+        provHigh, kdLow, kdHigh);
+  };
 
   render() {
     return (
@@ -64,7 +91,11 @@ export default class ProvinceFinder extends React.Component {
           <div>
             <FormGroup>
               <ControlLabel>My Networth</ControlLabel>
-              <FormControl type="number" value={1} />
+              <FormControl
+                bsSize="sm"
+                type="number"
+                value={this.state.myNw}
+                onChange={this.setMyNw} />
             </FormGroup>
             <Row>
               <Col xs={2}>
@@ -72,6 +103,7 @@ export default class ProvinceFinder extends React.Component {
               </Col>
               <Col xs={4}>
                 <FormControl
+                  bsSize="sm"
                   type="number"
                   min={0}
                   max={1}
@@ -84,6 +116,7 @@ export default class ProvinceFinder extends React.Component {
               </Col>
               <Col xs={4}>
                 <FormControl
+                  bsSize="sm"
                   type="number"
                   min={0}
                   max={1}
@@ -105,7 +138,11 @@ export default class ProvinceFinder extends React.Component {
           <div>
             <FormGroup>
               <ControlLabel>My Kingdom's Networth</ControlLabel>
-              <FormControl type="number" value={1} />
+              <FormControl
+                bsSize="sm"
+                type="number"
+                value={this.state.myKdNw}
+                onChange={this.setMyKdNw} />
             </FormGroup>
             <Row>
               <Col xs={2}>
@@ -113,6 +150,7 @@ export default class ProvinceFinder extends React.Component {
               </Col>
               <Col xs={4}>
                 <FormControl
+                  bsSize="sm"
                   type="number"
                   min={0}
                   max={1}
@@ -125,6 +163,7 @@ export default class ProvinceFinder extends React.Component {
               </Col>
               <Col xs={4}>
                 <FormControl
+                  bsSize="sm"
                   min={0}
                   max={1}
                   step={0.01}

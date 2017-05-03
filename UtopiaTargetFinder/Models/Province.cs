@@ -9,7 +9,7 @@ namespace UtopiaTargetFinder.Models
     {
         public Province()
         {
-            
+
         }
         public Province(dynamic obj)
         {
@@ -26,7 +26,7 @@ namespace UtopiaTargetFinder.Models
             if (parsed) Honor = honor;
             if (!parsed)
             {
-                
+
             }
         }
 
@@ -40,6 +40,15 @@ namespace UtopiaTargetFinder.Models
         public Race Race { get; set; }
         public int KingdomNetworth { get; set; }
 
+        public int NWA
+        {
+            get
+            {
+                try { return Networth / Land; }
+                catch (Exception) { return 0; }
+            }
+        }
+
         public static IEnumerable<Province> GetProvinces(dynamic obj)
         {
             var retVal = new List<Province>();
@@ -49,7 +58,7 @@ namespace UtopiaTargetFinder.Models
             {
                 try
                 {
-                    retVal.Add(new Province(obj.provinces[i])); 
+                    retVal.Add(new Province(obj.provinces[i]));
                 }
                 catch (Exception e)
                 {
