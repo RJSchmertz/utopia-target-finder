@@ -52,9 +52,12 @@ namespace UtopiaTargetFinder.Controllers
                 _session.Store(allProvinces.ToArray());
                 _session.Store(allKingdoms.ToArray());
                 _session.SaveChanges();
+                Console.WriteLine("***successfully updated DB");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine("***EXCEPTION LOADING NEW DATA");
+                Console.WriteLine(ex.Message);
                 //allProvinces.Add(new Province
                 //{
                 //    Honor = Honor.Baron,
