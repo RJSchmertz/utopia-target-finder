@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Race, Honor } from '../constants';
+import { Race, Honor, Stance } from '../constants';
 import * as utoActions from '../store/utoActions';
 import Header from '../components/Header';
 import * as filters from '../utils/filters';
@@ -22,18 +22,6 @@ export class ProvinceFinder extends React.Component {
   componentDidMount() {
     this.props.actions.getUtopiaData();
     window.onscroll = this.onBodyClick;
-  }
-
-  state = {
-    myNwChecked: true,
-    myKdNwChecked: false,
-    collapseHeader: false,
-    myNw: 200000,
-    myKdNw: 5000000,
-    provLow: 0.85,
-    provHigh: 1.10,
-    kdLow: 0.50,
-    kdHigh: 0.90
   }
 
   setMyNwChecked = event => {
@@ -84,6 +72,11 @@ export class ProvinceFinder extends React.Component {
         header: 'Kingdom Nw',
         accessor: 'kingdomNetworth',
         render: data => data.row.kingdomNetworth.toLocaleString()
+      },
+      {
+        header: 'Stance',
+        accessor: 'stance',
+        render: data => Stance[data.row.stance]
       }
     ];
 
@@ -92,12 +85,14 @@ export class ProvinceFinder extends React.Component {
     const {
       myNwChecked,
       myKdNwChecked,
+      stanceChecked,
       myNw,
       myKdNw,
       provLow,
       provHigh,
       kdLow,
-      kdHigh
+      kdHigh,
+      includeStances
     } = filterInfo;
 
     if (myNwChecked) {
@@ -106,6 +101,10 @@ export class ProvinceFinder extends React.Component {
 
     if (myKdNwChecked) {
       data = filters.myKdNetworthRange(data, myKdNw, kdLow, kdHigh);
+    }
+
+    if (stanceChecked) {
+      data = filters.stance(data, includeStances);
     }
 
     return (<ReactTable data={data} columns={columns} />);

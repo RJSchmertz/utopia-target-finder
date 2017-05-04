@@ -42,8 +42,10 @@ namespace UtopiaTargetFinder.Controllers
                 });
                 allProvinces.ForEach(prov =>
                 {
-                    var kdnw = allKingdoms.Single(x => x.Location == prov.Location).Networth;
-                    prov.KingdomNetworth = kdnw;
+                    var kd = allKingdoms.Single(x => x.Location == prov.Location);
+                    prov.KingdomNetworth = kd.Networth;
+                    prov.Stance = kd.Stance;
+
                 });
                 _session.DeleteWhere<Province>(x => true);
                 _session.DeleteWhere<Kingdom>(x => true);

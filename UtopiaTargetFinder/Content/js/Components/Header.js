@@ -9,6 +9,7 @@ import {
   Checkbox,
   Collapse
 } from 'react-bootstrap';
+import _ from 'lodash';
 
 
 export default class Header extends React.Component {
@@ -19,16 +20,22 @@ export default class Header extends React.Component {
   state = {
     myNwChecked: true,
     myKdNwChecked: false,
+    stanceChecked: false,
     myNw: 200000,
     myKdNw: 5000000,
     provLow: 0.85,
     provHigh: 1.10,
     kdLow: 0.50,
-    kdHigh: 0.90
+    kdHigh: 0.90,
+    includeStances: Array(1).fill(0)
   }
 
   setMyNwChecked = event => {
     this.setState({ myNwChecked: event.target.checked }, this.sendFilterInfo);
+  }
+
+  setStanceChecked = event => {
+    this.setState({ stanceChecked: event.target.checked }, this.sendFilterInfo);
   }
 
   setMyNw = event => {
@@ -60,25 +67,24 @@ export default class Header extends React.Component {
   }
 
   sendFilterInfo = () => {
-    const {
-      myNwChecked,
-      myKdNwChecked,
-      myNw,
-      myKdNw,
-      provLow,
-      provHigh,
-      kdLow,
-      kdHigh
-    } = this.state;
-
     this.props.actions
-      .setFilterInfo(myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
-        provHigh, kdLow, kdHigh);
+      .setFilterInfo({ ...this.state });
   };
 
   setCollapseHeader = () => {
     const { headerOpen, actions } = this.props;
     actions.setHeaderOpen(!headerOpen);
+  }
+
+  onStanceChecked = event => {
+    const currentList = this.state.includeStances;
+    const value = parseInt(event.target.value, 10);
+    if (event.target.checked) {
+      currentList.push(value);
+    } else {
+      _.remove(currentList, val => val === value);
+    }
+    this.setState({ includeStances: currentList }, this.sendFilterInfo);
   }
 
   render() {
@@ -141,53 +147,104 @@ export default class Header extends React.Component {
             </Row>
 
             <Row>
-            <FormGroup>
-              <Col xs={1}>
-              <ControlLabel>
-                <Checkbox
-                  checked={this.state.myKdNwChecked}
-                  onChange={this.setMyKdNwChecked} >
-                    KD NW
-                </Checkbox>
-              </ControlLabel>
-              </Col>
-              <Col xs={3}>
-              <FormControl
-                disabled={!this.state.myKdNwChecked}
-                bsSize="sm"
-                type="number"
-                value={this.state.myKdNw}
-                onChange={this.setMyKdNw} />
-              </Col>
-              <Col xs={1}>
-                <ControlLabel>Low: </ControlLabel>
-              </Col>
-              <Col xs={3}>
+              <FormGroup>
+                <Col xs={1}>
+                <ControlLabel>
+                  <Checkbox
+                    checked={this.state.myKdNwChecked}
+                    onChange={this.setMyKdNwChecked} >
+                      KD NW
+                  </Checkbox>
+                </ControlLabel>
+                </Col>
+                <Col xs={3}>
                 <FormControl
                   disabled={!this.state.myKdNwChecked}
                   bsSize="sm"
                   type="number"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={this.state.kdLow}
-                  onChange={this.setKdLow} />
-              </Col>
-              <Col xs={1}>
-                <ControlLabel>High: </ControlLabel>
-              </Col>
-              <Col xs={3}>
-                <FormControl
-                  disabled={!this.state.myKdNwChecked}
-                  bsSize="sm"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  type="number"
-                  value={this.state.kdHigh}
-                  onChange={this.setKdHigh} />
-              </Col>
-            </FormGroup>
+                  value={this.state.myKdNw}
+                  onChange={this.setMyKdNw} />
+                </Col>
+                <Col xs={1}>
+                  <ControlLabel>Low: </ControlLabel>
+                </Col>
+                <Col xs={3}>
+                  <FormControl
+                    disabled={!this.state.myKdNwChecked}
+                    bsSize="sm"
+                    type="number"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={this.state.kdLow}
+                    onChange={this.setKdLow} />
+                </Col>
+                <Col xs={1}>
+                  <ControlLabel>High: </ControlLabel>
+                </Col>
+                <Col xs={3}>
+                  <FormControl
+                    disabled={!this.state.myKdNwChecked}
+                    bsSize="sm"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    type="number"
+                    value={this.state.kdHigh}
+                    onChange={this.setKdHigh} />
+                </Col>
+              </FormGroup>
+            </Row>
+
+
+            <Row>
+              <FormGroup>
+                <Col xs={1}>
+                  <ControlLabel>
+                    <Checkbox
+                      checked={this.state.stanceChecked}
+                      onChange={this.setStanceChecked} >
+                        Stance
+                    </Checkbox>
+                  </ControlLabel>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.stanceChecked}
+                      value={0}
+                      checked={_.indexOf(this.state.includeStances, 0) > -1}
+                      onChange={this.onStanceChecked} >
+                        Normal
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.stanceChecked}
+                      value={1}
+                      checked={_.indexOf(this.state.includeStances, 1) > -1}
+                      onChange={this.onStanceChecked} >
+                        Fort
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.stanceChecked}
+                      value={2}
+                      checked={_.indexOf(this.state.includeStances, 2) > -1}
+                      onChange={this.onStanceChecked} >
+                        War
+                    </Checkbox>
+                </Col>
+                <Col xs={7}>
+                    <Checkbox
+                      disabled={!this.state.stanceChecked}
+                      value={3}
+                      checked={_.indexOf(this.state.includeStances, 3) > -1}
+                      onChange={this.onStanceChecked} >
+                        Aggressive
+                    </Checkbox>
+                </Col>
+              </FormGroup>
             </Row>
         </div>
           </Collapse>

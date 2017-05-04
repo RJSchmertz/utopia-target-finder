@@ -39,6 +39,7 @@ namespace UtopiaTargetFinder.Models
         public bool Protected { get; set; }
         public Race Race { get; set; }
         public int KingdomNetworth { get; set; }
+        public Stance Stance { get; set; }
 
         public int NWA
         {

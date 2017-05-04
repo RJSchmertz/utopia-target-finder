@@ -5,11 +5,8 @@ export const setUtopiaData = (provinces, kingdoms) => ({
   type: types.SET_UTOPIA_DATA, provinces, kingdoms
 });
 
-export const setFilterInfo = (myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
-  provHigh, kdLow, kdHigh) => ({
-    type: types.SET_FILTER_INFO, myNwChecked, myKdNwChecked, myNw, myKdNw, provLow,
-    provHigh, kdLow, kdHigh
-  });
+export const setFilterInfo = filterInfo => ({
+  type: types.SET_FILTER_INFO, filterInfo });
 
 export const setHeaderOpen = headerOpen => ({
   type: types.SET_HEADER_OPEN, headerOpen
