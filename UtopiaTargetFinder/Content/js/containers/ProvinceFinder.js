@@ -24,10 +24,6 @@ export class ProvinceFinder extends React.Component {
     window.onscroll = this.onBodyClick;
   }
 
-  setMyNwChecked = event => {
-    this.setState({ myNwChecked: event.target.checked }, this.sendFilterInfo);
-  }
-
   onBodyClick = () => {
     this.props.actions.setHeaderOpen(false);
   }

@@ -235,7 +235,7 @@ export default class Header extends React.Component {
                         War
                     </Checkbox>
                 </Col>
-                <Col xs={7}>
+                <Col xs={1}>
                     <Checkbox
                       disabled={!this.state.stanceChecked}
                       value={3}
