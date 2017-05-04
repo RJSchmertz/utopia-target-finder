@@ -9,6 +9,7 @@ import { Race, Honor, Stance } from '../constants';
 import * as utoActions from '../store/utoActions';
 import Header from '../components/Header';
 import * as filters from '../utils/filters';
+import _ from 'lodash';
 
 export class ProvinceFinder extends React.Component {
   static propTypes = {
@@ -76,7 +77,6 @@ export class ProvinceFinder extends React.Component {
       }
     ];
 
-    let data = provinces;
     const { filterInfo } = this.props;
     const {
       myNwChecked,
@@ -90,6 +90,8 @@ export class ProvinceFinder extends React.Component {
       kdHigh,
       includeStances
     } = filterInfo;
+
+    let data = _.cloneDeep(provinces);
 
     if (myNwChecked) {
       data = filters.myNetworthRange(data, myNw, provLow, provHigh);
