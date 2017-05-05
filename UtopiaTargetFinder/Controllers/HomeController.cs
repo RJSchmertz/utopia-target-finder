@@ -32,6 +32,11 @@ namespace UtopiaTargetFinder.Controllers
             try
             {
                 var jsonAsDynamic = JsonConvert.DeserializeObject<List<dynamic>>(responseAsString.Result);
+
+                _session.DeleteWhere<Province>(x => true);
+                _session.DeleteWhere<Kingdom>(x => true);
+                _session.SaveChanges();
+
                 var timestamp = DateTime.Parse(jsonAsDynamic[0].ToString());
                 jsonAsDynamic.RemoveAt(0);
                 jsonAsDynamic.RemoveAt(jsonAsDynamic.Count - 1);
@@ -45,13 +50,14 @@ namespace UtopiaTargetFinder.Controllers
                     var kd = allKingdoms.Single(x => x.Location == prov.Location);
                     prov.KingdomNetworth = kd.Networth;
                     prov.Stance = kd.Stance;
+                    _session.Store(prov);
 
                 });
-                _session.DeleteWhere<Province>(x => true);
-                _session.DeleteWhere<Kingdom>(x => true);
-                _session.Store(allProvinces.ToArray());
-                _session.Store(allKingdoms.ToArray());
+                //_session.Store(allProvinces.ToArray());
+                //_session.Store(allKingdoms.ToArray());
                 _session.SaveChanges();
+
+                var thing = _session.Query<Province>().ToList();
                 Console.WriteLine("***successfully updated DB");
             }
             catch (Exception ex)

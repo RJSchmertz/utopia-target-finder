@@ -174,7 +174,6 @@ export default class Header extends React.Component {
                     bsSize="sm"
                     type="number"
                     min={0}
-                    max={1}
                     step={0.01}
                     value={this.state.kdLow}
                     onChange={this.setKdLow} />
