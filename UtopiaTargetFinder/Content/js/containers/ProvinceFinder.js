@@ -22,7 +22,7 @@ export class ProvinceFinder extends React.Component {
 
   componentDidMount() {
     this.props.actions.getUtopiaData();
-    window.onscroll = this.onBodyClick;
+    // window.onscroll = this.onBodyClick;
   }
 
   onBodyClick = () => {

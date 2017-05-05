@@ -21,8 +21,8 @@ export default class Header extends React.Component {
     myNwChecked: true,
     myKdNwChecked: false,
     stanceChecked: false,
-    myNw: 200000,
-    myKdNw: 5000000,
+    myNw: 200,
+    myKdNw: 5000,
     provLow: 0.85,
     provHigh: 1.10,
     kdLow: 0.50,
@@ -90,8 +90,7 @@ export default class Header extends React.Component {
   render() {
     return (
       <Navbar inverse collapseOnSelect className="application-header">
-          <span
-            onClick={this.setCollapseHeader} >
+          <span onClick={this.setCollapseHeader} className="filter-collapse">
             <span className="glyphicon glyphicon-menu-down" /> Filters
           </span>
           <Collapse in={this.props.headerOpen}>
@@ -103,11 +102,11 @@ export default class Header extends React.Component {
                 <Checkbox
                   checked={this.state.myNwChecked}
                   onChange={this.setMyNwChecked} >
-                    My NW
+                    My NW (k)
                 </Checkbox>
               </ControlLabel>
               </Col>
-              <Col xs={3}>
+              <Col xs={3} lg={2}>
               <FormControl
                 disabled={!this.state.myNwChecked}
                 bsSize="sm"
@@ -153,7 +152,7 @@ export default class Header extends React.Component {
                   <Checkbox
                     checked={this.state.myKdNwChecked}
                     onChange={this.setMyKdNwChecked} >
-                      KD NW
+                      KD NW (k)
                   </Checkbox>
                 </ControlLabel>
                 </Col>
@@ -195,8 +194,7 @@ export default class Header extends React.Component {
               </FormGroup>
             </Row>
 
-
-            <Row>
+            <Row className="stance-row">
               <FormGroup>
                 <Col xs={1}>
                   <ControlLabel>
