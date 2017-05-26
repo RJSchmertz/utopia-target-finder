@@ -17,12 +17,13 @@ export class ProvinceFinder extends React.Component {
     provinces: PropTypes.array,
     kingdoms: PropTypes.array,
     headerOpen: PropTypes.bool,
-    filterInfo: PropTypes.object
+    filterInfo: PropTypes.object,
+    raceTypes: PropTypes.object,
+    stanceTypes: PropTypes.object
   }
 
   componentDidMount() {
     this.props.actions.getUtopiaData();
-    // window.onscroll = this.onBodyClick;
   }
 
   onBodyClick = () => {
@@ -117,7 +118,11 @@ export class ProvinceFinder extends React.Component {
   render() {
     return (
       <div>
-        <Header actions={this.props.actions} headerOpen={this.props.headerOpen} />
+        <Header
+          actions={this.props.actions}
+          raceTypes={this.props.raceTypes}
+          stanceTypes={this.props.stanceTypes}
+          headerOpen={this.props.headerOpen} />
         <div className="container-fluid main-panel pull-left" onClick={this.onBodyClick}>
           <Row>
             <Col>
@@ -141,7 +146,9 @@ const mapStateToProps = state => (
     provinces: state.utoReducer.provinces,
     kingdoms: state.utoReducer.kingdoms,
     filterInfo: state.utoReducer.filterInfo,
-    headerOpen: state.utoReducer.headerOpen
+    headerOpen: state.utoReducer.headerOpen,
+    raceTypes: state.utoReducer.raceTypes,
+    stanceTypes: state.utoReducer.stanceTypes
   }
 );
 

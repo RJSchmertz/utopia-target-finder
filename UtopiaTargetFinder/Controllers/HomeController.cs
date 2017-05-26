@@ -98,8 +98,56 @@ namespace UtopiaTargetFinder.Controllers
         {
             var provs = _session.Query<Province>().ToList();
             var kds = _session.Query<Kingdom>().ToList();
+            var stancesSet = provs.Any(x => x.Stance != Stance.Normal);
+            if (!stancesSet)
+            {
+                provs.ForEach(prov =>
+                {
+                    var kd = kds.Single(x => x.Location == prov.Location);
+                    prov.KingdomNetworth = kd.Networth;
+                    prov.Stance = kd.Stance;
+                    //_session.Store(prov);
+                });
+                //_session.SaveChanges();
+            }
 
-            return Json(new {Provinces = provs, Kingdoms = kds });
+            return Json(new
+            {
+                Provinces = provs,
+                Kingdoms = kds,
+                RaceTypes = GetRaceEnumDict(),
+                StanceTypes = GetStanceEnumDict()
+            });
+        }
+
+        private Dictionary<string, int> GetRaceEnumDict()
+        {
+            var names = Enum.GetNames(typeof(Race)).ToList();
+            names.Sort();
+            var enumDictionary = new Dictionary<string, int>();
+
+            names.ForEach(name =>
+            {
+                Enum.TryParse(name, out Race enumVal);
+                enumDictionary.Add(name, (int)enumVal);
+            });
+
+            return enumDictionary;
+        }
+
+        private Dictionary<string, int> GetStanceEnumDict()
+        {
+            var names = Enum.GetNames(typeof(Stance)).ToList();
+            names.Sort();
+            var enumDictionary = new Dictionary<string, int>();
+
+            names.ForEach(name =>
+            {
+                Enum.TryParse(name, out Stance enumVal);
+                enumDictionary.Add(name, (int)enumVal);
+            });
+
+            return enumDictionary;
         }
 
         public IActionResult Error()

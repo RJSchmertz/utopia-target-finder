@@ -1,8 +1,8 @@
 import request from 'superagent';
 import types from './utoActionTypes';
 
-export const setUtopiaData = (provinces, kingdoms) => ({
-  type: types.SET_UTOPIA_DATA, provinces, kingdoms
+export const setUtopiaData = (provinces, kingdoms, raceTypes, stanceTypes) => ({
+  type: types.SET_UTOPIA_DATA, provinces, kingdoms, raceTypes, stanceTypes
 });
 
 export const setFilterInfo = filterInfo => ({
@@ -22,7 +22,9 @@ export const getUtopiaData = () =>
         else {
           const provinces = resp.body.provinces;
           const kingdoms = resp.body.kingdoms;
-          dispatch(setUtopiaData(provinces, kingdoms));
+          const raceTypes = resp.body.raceTypes;
+          const stanceTypes = resp.body.stanceTypes;
+          dispatch(setUtopiaData(provinces, kingdoms, raceTypes, stanceTypes));
         }
       });
   };

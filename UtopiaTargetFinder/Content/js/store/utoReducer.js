@@ -23,11 +23,20 @@ export const utoReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case types.SET_UTOPIA_DATA:
-      return { ...newState, provinces: action.provinces, kingdoms: action.kingdoms };
+      return {
+        ...newState,
+        provinces: action.provinces,
+        kingdoms: action.kingdoms,
+        raceTypes: action.raceTypes,
+        stanceTypes: action.stanceTypes
+      };
     case types.SET_FILTER_INFO:
       return { ...newState, filterInfo: { ...action.filterInfo } };
     case types.SET_HEADER_OPEN:
       return { ...newState, headerOpen: action.headerOpen };
+    case types.SET_RACE_TYPES: {
+      return { ...state, raceTypes: action.raceTypes };
+    }
     default:
       return newState;
   }

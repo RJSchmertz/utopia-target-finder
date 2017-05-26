@@ -15,59 +15,31 @@ import _ from 'lodash';
 export default class Header extends React.Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    headerOpen: PropTypes.bool
+    headerOpen: PropTypes.bool,
+    raceTypes: PropTypes.object,
+    stanceTypes: PropTypes.object
   }
   state = {
     myNwChecked: true,
     myKdNwChecked: false,
     stanceChecked: false,
+    raceChecked: false,
     myNw: 200,
     myKdNw: 5000,
     provLow: 0.85,
     provHigh: 1.10,
     kdLow: 0.50,
     kdHigh: 0.90,
-    includeStances: Array(1).fill(0)
+    includeStances: Array(1).fill(0),
+    includeRaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
   }
 
-  setMyNwChecked = event => {
-    this.setState({ myNwChecked: event.target.checked }, this.sendFilterInfo);
-  }
+  setInputValue = event => {
+    let value;
+    if (event.target.type === 'number') value = event.target.value;
+    if (event.target.type === 'checkbox') value = event.target.checked;
 
-  setStanceChecked = event => {
-    this.setState({ stanceChecked: event.target.checked }, this.sendFilterInfo);
-  }
-
-  setStanceChecked = event => {
-    this.setState({ raceChecked: event.target.checked }, this.sendFilterInfo);
-  }
-
-  setMyNw = event => {
-    this.setState({ myNw: event.target.value }, this.sendFilterInfo);
-  }
-
-  setMyKdNw = event => {
-    this.setState({ myKdNw: event.target.value }, this.sendFilterInfo);
-  }
-
-  setProvLow = event => {
-    this.setState({ provLow: event.target.value }, this.sendFilterInfo);
-  }
-
-  setProvHigh = event => {
-    this.setState({ provHigh: event.target.value }, this.sendFilterInfo);
-  }
-
-  setMyKdNwChecked = event => {
-    this.setState({ myKdNwChecked: event.target.checked }, this.sendFilterInfo);
-  }
-
-  setKdLow = event => {
-    this.setState({ kdLow: event.target.value }, this.sendFilterInfo);
-  }
-
-  setKdHigh = event => {
-    this.setState({ kdHigh: event.target.value }, this.sendFilterInfo);
+    this.setState({ [event.target.name]: value }, this.sendFilterInfo);
   }
 
   sendFilterInfo = () => {
@@ -102,6 +74,78 @@ export default class Header extends React.Component {
     this.setState({ includeRaces: currentList }, this.sendFilterInfo);
   }
 
+  getStanceRow = () => {
+    const { stanceTypes } = this.props;
+    const stanceCheckBoxes =
+      _.map(stanceTypes, (intValue, name) =>
+        (
+          <Col key={`${name}${intValue}`} xs={1}>
+            <Checkbox
+              disabled={!this.state.stanceChecked}
+              value={intValue}
+              checked={_.indexOf(this.state.includeStances, intValue) > -1}
+              onChange={this.onStanceChecked} >
+                {name}
+            </Checkbox>
+          </Col>
+        )
+      );
+
+    return (
+      <Row className="stance-row">
+        <FormGroup>
+          <Col xs={1}>
+            <ControlLabel>
+              <Checkbox
+                name="stanceChecked"
+                checked={this.state.stanceChecked}
+                onChange={this.setInputValue} >
+                  Stance
+              </Checkbox>
+            </ControlLabel>
+          </Col>
+          {stanceCheckBoxes}
+        </FormGroup>
+      </Row>
+    );
+  }
+
+  getRaceRow = () => {
+    const { raceTypes } = this.props;
+    const raceCheckBoxes =
+      _.map(raceTypes, (intValue, name) =>
+        (
+          <Col key={`${name}${intValue}`} xs={1}>
+            <Checkbox
+              disabled={!this.state.raceChecked}
+              value={intValue}
+              checked={_.indexOf(this.state.includeRaces, intValue) > -1}
+              onChange={this.onRaceChecked} >
+                {name}
+            </Checkbox>
+          </Col>
+        )
+      );
+
+    return (
+      <Row>
+        <FormGroup>
+          <Col xs={1}>
+            <ControlLabel>
+              <Checkbox
+                name="raceChecked"
+                checked={this.state.raceChecked}
+                onChange={this.setInputValue} >
+                  Race
+              </Checkbox>
+            </ControlLabel>
+          </Col>
+          {raceCheckBoxes}
+        </FormGroup>
+      </Row>
+      );
+  }
+
   render() {
     return (
       <Navbar inverse collapseOnSelect className="application-header">
@@ -110,24 +154,27 @@ export default class Header extends React.Component {
           </span>
           <Collapse in={this.props.headerOpen}>
         <div>
+            {/* MY Networth */}
             <Row>
             <FormGroup>
               <Col xs={1}>
               <ControlLabel>
                 <Checkbox
+                  name="myNwChecked"
                   checked={this.state.myNwChecked}
-                  onChange={this.setMyNwChecked} >
+                  onChange={this.setInputValue} >
                     My NW (k)
                 </Checkbox>
               </ControlLabel>
               </Col>
               <Col xs={3} lg={2}>
-              <FormControl
-                disabled={!this.state.myNwChecked}
-                bsSize="sm"
-                type="number"
-                value={this.state.myNw}
-                onChange={this.setMyNw} />
+                <FormControl
+                  disabled={!this.state.myNwChecked}
+                  bsSize="sm"
+                  type="number"
+                  name="myNw"
+                  value={this.state.myNw}
+                  onChange={this.setInputValue} />
               </Col>
               <Col xs={1}>
                 <ControlLabel>Low:</ControlLabel>
@@ -140,8 +187,9 @@ export default class Header extends React.Component {
                   min={0}
                   max={1}
                   step={0.01}
+                  name="provLow"
                   value={this.state.provLow}
-                  onChange={this.setProvLow} />
+                  onChange={this.setInputValue} />
               </Col>
               <Col xs={1}>
                 <ControlLabel>High: </ControlLabel>
@@ -152,32 +200,36 @@ export default class Header extends React.Component {
                   bsSize="sm"
                   type="number"
                   min={0}
-                  max={1}
+                  max={1.3}
                   step={0.01}
+                  name="provHigh"
                   value={this.state.provHigh}
-                  onChange={this.setProvHigh} />
+                  onChange={this.setInputValue} />
               </Col>
             </FormGroup>
             </Row>
 
+            {/* Kingdom Networth */}
             <Row>
               <FormGroup>
                 <Col xs={1}>
                 <ControlLabel>
                   <Checkbox
+                    name="myKdNwChecked"
                     checked={this.state.myKdNwChecked}
-                    onChange={this.setMyKdNwChecked} >
+                    onChange={this.setInputValue} >
                       KD NW (k)
                   </Checkbox>
                 </ControlLabel>
                 </Col>
                 <Col xs={3}>
-                <FormControl
-                  disabled={!this.state.myKdNwChecked}
-                  bsSize="sm"
-                  type="number"
-                  value={this.state.myKdNw}
-                  onChange={this.setMyKdNw} />
+                  <FormControl
+                    disabled={!this.state.myKdNwChecked}
+                    bsSize="sm"
+                    type="number"
+                    name="myKdNw"
+                    value={this.state.myKdNw}
+                    onChange={this.setInputValue} />
                 </Col>
                 <Col xs={1}>
                   <ControlLabel>Low: </ControlLabel>
@@ -189,8 +241,9 @@ export default class Header extends React.Component {
                     type="number"
                     min={0}
                     step={0.01}
+                    name="kdLow"
                     value={this.state.kdLow}
-                    onChange={this.setKdLow} />
+                    onChange={this.setInputValue} />
                 </Col>
                 <Col xs={1}>
                   <ControlLabel>High: </ControlLabel>
@@ -203,148 +256,14 @@ export default class Header extends React.Component {
                     max={1}
                     step={0.01}
                     type="number"
+                    name="kdHigh"
                     value={this.state.kdHigh}
-                    onChange={this.setKdHigh} />
+                    onChange={this.setInputValue} />
                 </Col>
               </FormGroup>
             </Row>
-
-            <Row className="stance-row">
-              <FormGroup>
-                <Col xs={1}>
-                  <ControlLabel>
-                    <Checkbox
-                      checked={this.state.stanceChecked}
-                      onChange={this.setStanceChecked} >
-                        Stance
-                    </Checkbox>
-                  </ControlLabel>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.stanceChecked}
-                      value={0}
-                      checked={_.indexOf(this.state.includeStances, 0) > -1}
-                      onChange={this.onStanceChecked} >
-                        Normal
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.stanceChecked}
-                      value={1}
-                      checked={_.indexOf(this.state.includeStances, 1) > -1}
-                      onChange={this.onStanceChecked} >
-                        Fort
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.stanceChecked}
-                      value={2}
-                      checked={_.indexOf(this.state.includeStances, 2) > -1}
-                      onChange={this.onStanceChecked} >
-                        War
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.stanceChecked}
-                      value={3}
-                      checked={_.indexOf(this.state.includeStances, 3) > -1}
-                      onChange={this.onStanceChecked} >
-                        Aggressive
-                    </Checkbox>
-                </Col>
-              </FormGroup>
-            </Row>
-
-
-            <Row>
-              <FormGroup>
-                <Col xs={1}>
-                  <ControlLabel>
-                    <Checkbox
-                      checked={this.state.raceChecked}
-                      onChange={this.setRaceChecked} >
-                        Race
-                    </Checkbox>
-                  </ControlLabel>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={0}
-                      checked={_.indexOf(this.state.includeRaces, 0) > -1}
-                      onChange={this.onRaceChecked} >
-                        Avian
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={1}
-                      checked={_.indexOf(this.state.includeRaces, 1) > -1}
-                      onChange={this.onRaceChecked} >
-                        Dwarf
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={2}
-                      checked={_.indexOf(this.state.includeRaces, 2) > -1}
-                      onChange={this.onRaceChecked} >
-                        Elf
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={3}
-                      checked={_.indexOf(this.state.includeRaces, 3) > -1}
-                      onChange={this.onRaceChecked} >
-                        Faery
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={4}
-                      checked={_.indexOf(this.state.includeRaces, 4) > -1}
-                      onChange={this.onRaceChecked} >
-                        Halfling
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={5}
-                      checked={_.indexOf(this.state.includeRaces, 5) > -1}
-                      onChange={this.onRaceChecked} >
-                        Human
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={6}
-                      checked={_.indexOf(this.state.includeRaces, 6) > -1}
-                      onChange={this.onRaceChecked} >
-                        Orc
-                    </Checkbox>
-                </Col>
-                <Col xs={1}>
-                    <Checkbox
-                      disabled={!this.state.raceChecked}
-                      value={7}
-                      checked={_.indexOf(this.state.includeRaces, 7) > -1}
-                      onChange={this.onRaceChecked} >
-                        Undead
-                    </Checkbox>
-                </Col>
-              </FormGroup>
-            </Row>
+            {this.getStanceRow()}
+            {this.getRaceRow()}
         </div>
           </Collapse>
       </Navbar>
