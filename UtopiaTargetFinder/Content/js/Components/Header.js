@@ -38,6 +38,10 @@ export default class Header extends React.Component {
     this.setState({ stanceChecked: event.target.checked }, this.sendFilterInfo);
   }
 
+  setStanceChecked = event => {
+    this.setState({ raceChecked: event.target.checked }, this.sendFilterInfo);
+  }
+
   setMyNw = event => {
     this.setState({ myNw: event.target.value }, this.sendFilterInfo);
   }
@@ -85,6 +89,17 @@ export default class Header extends React.Component {
       _.remove(currentList, val => val === value);
     }
     this.setState({ includeStances: currentList }, this.sendFilterInfo);
+  }
+
+  onRaceChecked = event => {
+    const currentList = this.state.includeRaces;
+    const value = parseInt(event.target.value, 10);
+    if (event.target.checked) {
+      currentList.push(value);
+    } else {
+      _.remove(currentList, val => val === value);
+    }
+    this.setState({ includeRaces: currentList }, this.sendFilterInfo);
   }
 
   render() {
@@ -239,6 +254,93 @@ export default class Header extends React.Component {
                       checked={_.indexOf(this.state.includeStances, 3) > -1}
                       onChange={this.onStanceChecked} >
                         Aggressive
+                    </Checkbox>
+                </Col>
+              </FormGroup>
+            </Row>
+
+
+            <Row>
+              <FormGroup>
+                <Col xs={1}>
+                  <ControlLabel>
+                    <Checkbox
+                      checked={this.state.raceChecked}
+                      onChange={this.setRaceChecked} >
+                        Race
+                    </Checkbox>
+                  </ControlLabel>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={0}
+                      checked={_.indexOf(this.state.includeRaces, 0) > -1}
+                      onChange={this.onRaceChecked} >
+                        Avian
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={1}
+                      checked={_.indexOf(this.state.includeRaces, 1) > -1}
+                      onChange={this.onRaceChecked} >
+                        Dwarf
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={2}
+                      checked={_.indexOf(this.state.includeRaces, 2) > -1}
+                      onChange={this.onRaceChecked} >
+                        Elf
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={3}
+                      checked={_.indexOf(this.state.includeRaces, 3) > -1}
+                      onChange={this.onRaceChecked} >
+                        Faery
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={4}
+                      checked={_.indexOf(this.state.includeRaces, 4) > -1}
+                      onChange={this.onRaceChecked} >
+                        Halfling
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={5}
+                      checked={_.indexOf(this.state.includeRaces, 5) > -1}
+                      onChange={this.onRaceChecked} >
+                        Human
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={6}
+                      checked={_.indexOf(this.state.includeRaces, 6) > -1}
+                      onChange={this.onRaceChecked} >
+                        Orc
+                    </Checkbox>
+                </Col>
+                <Col xs={1}>
+                    <Checkbox
+                      disabled={!this.state.raceChecked}
+                      value={7}
+                      checked={_.indexOf(this.state.includeRaces, 7) > -1}
+                      onChange={this.onRaceChecked} >
+                        Undead
                     </Checkbox>
                 </Col>
               </FormGroup>

@@ -12,3 +12,7 @@ export const myKdNetworthRange = (provinces, myKdNw, low, high) =>
 export const stance = (provinces, stances) =>
   _.filter(provinces,
     prov => _.includes(stances, prov.stance));
+
+export const race = (provinces, races) =>
+  _.filter(provinces,
+    prov => _.includes(races, prov.race));

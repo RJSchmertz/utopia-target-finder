@@ -81,6 +81,7 @@ export class ProvinceFinder extends React.Component {
     const {
       myNwChecked,
       myKdNwChecked,
+      raceChecked,
       stanceChecked,
       myNw,
       myKdNw,
@@ -88,7 +89,8 @@ export class ProvinceFinder extends React.Component {
       provHigh,
       kdLow,
       kdHigh,
-      includeStances
+      includeStances,
+      includeRaces
     } = filterInfo;
 
     let data = _.cloneDeep(provinces);
@@ -103,6 +105,10 @@ export class ProvinceFinder extends React.Component {
 
     if (stanceChecked) {
       data = filters.stance(data, includeStances);
+    }
+
+    if (raceChecked) {
+      data = filters.race(data, includeRaces);
     }
 
     return (<ReactTable data={data} columns={columns} />);
