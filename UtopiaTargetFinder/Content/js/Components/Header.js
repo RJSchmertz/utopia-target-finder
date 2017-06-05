@@ -20,7 +20,7 @@ export default class Header extends React.Component {
     stanceTypes: PropTypes.object
   }
   state = {
-    myNwChecked: true,
+    myNwChecked: false,
     myKdNwChecked: false,
     stanceChecked: false,
     raceChecked: false,
@@ -76,12 +76,17 @@ export default class Header extends React.Component {
 
   getStanceRow = () => {
     const { stanceTypes } = this.props;
+    const style = {
+      float: 'left',
+      paddingLeft: '5px'
+    };
     const stanceCheckBoxes =
       _.map(stanceTypes, (intValue, name) =>
         (
-          <Col key={`${name}${intValue}`} xs={1}>
+          <Col key={`${name}${intValue}`}>
             <Checkbox
               disabled={!this.state.stanceChecked}
+              style={style}
               value={intValue}
               checked={_.indexOf(this.state.includeStances, intValue) > -1}
               onChange={this.onStanceChecked} >
@@ -112,25 +117,31 @@ export default class Header extends React.Component {
 
   getRaceRow = () => {
     const { raceTypes } = this.props;
+    const style = {
+      float: 'left',
+      paddingLeft: '5px'
+    };
     const raceCheckBoxes =
-      _.map(raceTypes, (intValue, name) =>
+      _.map(raceTypes, (intValue, name, index) =>
         (
-          <Col key={`${name}${intValue}`} xs={1}>
             <Checkbox
+              key={`${name}${intValue}`}
+              style={style}
               disabled={!this.state.raceChecked}
               value={intValue}
               checked={_.indexOf(this.state.includeRaces, intValue) > -1}
               onChange={this.onRaceChecked} >
                 {name}
             </Checkbox>
-          </Col>
         )
       );
 
     return (
       <Row>
         <FormGroup>
-          <Col xs={1}>
+          <Col
+            style={{ marginRight: '25px' }}
+            xs={1}>
             <ControlLabel>
               <Checkbox
                 name="raceChecked"
@@ -140,7 +151,11 @@ export default class Header extends React.Component {
               </Checkbox>
             </ControlLabel>
           </Col>
+          <Col xs={10}>
+          <Row >
           {raceCheckBoxes}
+          </Row>
+          </Col>
         </FormGroup>
       </Row>
       );
