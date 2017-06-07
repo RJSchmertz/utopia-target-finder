@@ -6,7 +6,8 @@ export const Race = {
   4: 'Halfling',
   5: 'Human',
   6: 'Orc',
-  7: 'Undead'
+  7: 'Undead',
+  8: 'Dryad'
 };
 
 export const Honor = {
