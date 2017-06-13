@@ -4,6 +4,11 @@ export const myNetworthRange = (provinces, myNw, low, high) =>
     prov => prov.networth > myNw * 1000 * low
     && prov.networth < myNw * 1000 * high);
 
+export const myLandRange = (provinces, myLand, low, high) =>
+  _.filter(provinces,
+    prov => prov.land > myLand * low
+    && prov.land < myLand * high);
+
 export const myKdNetworthRange = (provinces, myKdNw, low, high) =>
   _.filter(provinces,
     prov => prov.kingdomNetworth > myKdNw * 1000 * low

@@ -81,13 +81,17 @@ export class ProvinceFinder extends React.Component {
     const { filterInfo } = this.props;
     const {
       myNwChecked,
+      myLandChecked,
       myKdNwChecked,
       raceChecked,
       stanceChecked,
       myNw,
+      myLand,
       myKdNw,
       provLow,
       provHigh,
+      provLandLow,
+      provLandHigh,
       kdLow,
       kdHigh,
       includeStances,
@@ -98,6 +102,10 @@ export class ProvinceFinder extends React.Component {
 
     if (myNwChecked) {
       data = filters.myNetworthRange(data, myNw, provLow, provHigh);
+    }
+
+    if (myLandChecked) {
+      data = filters.myLandRange(data, myLand, provLandLow, provLandHigh);
     }
 
     if (myKdNwChecked) {

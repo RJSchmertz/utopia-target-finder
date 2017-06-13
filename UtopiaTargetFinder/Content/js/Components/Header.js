@@ -21,13 +21,17 @@ export default class Header extends React.Component {
   }
   state = {
     myNwChecked: false,
+    myLandChecked: false,
     myKdNwChecked: false,
     stanceChecked: false,
     raceChecked: false,
     myNw: 200,
+    myLand: 800,
     myKdNw: 5000,
     provLow: 0.85,
     provHigh: 1.10,
+    provLandLow: 0.85,
+    provLandHigh: 1.10,
     kdLow: 0.50,
     kdHigh: 0.90,
     includeStances: Array(1).fill(0),
@@ -219,6 +223,61 @@ export default class Header extends React.Component {
                   step={0.01}
                   name="provHigh"
                   value={this.state.provHigh}
+                  onChange={this.setInputValue} />
+              </Col>
+            </FormGroup>
+            </Row>
+
+
+            {/* MY Land */}
+            <Row>
+            <FormGroup>
+              <Col xs={1}>
+              <ControlLabel>
+                <Checkbox
+                  name="myLandChecked"
+                  checked={this.state.myLandChecked}
+                  onChange={this.setInputValue} >
+                    My Land
+                </Checkbox>
+              </ControlLabel>
+              </Col>
+              <Col xs={3} lg={2}>
+                <FormControl
+                  disabled={!this.state.myLandChecked}
+                  bsSize="sm"
+                  type="number"
+                  name="myLand"
+                  value={this.state.myLand}
+                  onChange={this.setInputValue} />
+              </Col>
+              <Col xs={1}>
+                <ControlLabel>Low:</ControlLabel>
+              </Col>
+              <Col xs={3}>
+                <FormControl
+                  disabled={!this.state.myLandChecked}
+                  bsSize="sm"
+                  type="number"
+                  min={0}
+                  step={0.01}
+                  name="provLandLow"
+                  value={this.state.provLandLow}
+                  onChange={this.setInputValue} />
+              </Col>
+              <Col xs={1}>
+                <ControlLabel>High: </ControlLabel>
+              </Col>
+              <Col xs={3}>
+                <FormControl
+                  disabled={!this.state.myLandChecked}
+                  bsSize="sm"
+                  type="number"
+                  min={0}
+                  max={1.3}
+                  step={0.01}
+                  name="provLandHigh"
+                  value={this.state.provLandHigh}
                   onChange={this.setInputValue} />
               </Col>
             </FormGroup>
