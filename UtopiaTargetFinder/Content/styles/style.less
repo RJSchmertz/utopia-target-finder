@@ -1,0 +1,59 @@
+@import "~bootstrap/less/bootstrap";
+
+body {
+  background-color: black;
+  font-weight: bold;
+  font-size: 16px;
+  color: silver;
+}
+
+.application-header {
+  border-bottom: 3px solid gray;
+  margin-bottom: 0px;
+  min-height: 50px;
+  position: fixed;
+  z-index: 2;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  .container {
+    margin: 5px;
+  }
+}
+
+.form-control[disabled], .checkbox.disabled {
+  opacity: 0.3;
+}
+
+.stance-row {
+  min-width: 900px;
+}
+
+.form-group .col-xs-1 {
+  padding-left: 0px;
+  width: 8%;
+}
+
+.form-group .col-xs-3 {
+  margin-right: 1px;
+}
+
+.main-panel {
+  top: 55px;
+  padding: 55px 15px 15px 15px;
+  margin: 25px;
+  max-width: 1000px;
+}
+
+.filter-collapse {
+  font-size: 16pt;
+}
+
+.radio + .radio,
+.checkbox + .checkbox {
+  margin-top: inherit;
+}
+
+.radio, .checkbox {
+  margin-top: 0px;
+}
